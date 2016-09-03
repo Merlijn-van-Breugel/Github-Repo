@@ -55,4 +55,6 @@ ols_ridge_function <- function(X, y, lambda, standardize) {
   return(result)
   
   #return(summary(ols_ridge))
+  
+  #Maud is mega lief
 }
