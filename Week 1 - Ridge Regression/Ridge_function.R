@@ -5,19 +5,9 @@
 # Date:     01-09-2016
 
 ols_ridge_function <- function(X,y,lambda,standardize){
-    
-    scaling_factor_X <- 
-        if (standardize==TRUE) {
-            sqrt(apply(X,2,var))} else {
-                FALSE
-            }
-    scaling_factor_y <- 
-        if (standardize==TRUE) {
-            sqrt(apply(y,2,var))} else {
-                FALSE
-            }
-    X <- scale(X, center=colMeans(X), scale=scaling_factor_X)
-    y <- scale(y, center=colMeans(y), scale=scaling_factor_y)
+
+    X <- scaling_function(X, TRUE, standardize)
+    y <- scaling_function(y, TRUE, standardize)
     
     size_X  <- dim(X)
     size_y  <- dim(y)
