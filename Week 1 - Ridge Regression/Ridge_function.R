@@ -1,7 +1,7 @@
 
-# Title:    Week 1 Ridge Regression
+# Title:    Week 1 Ridge Regression - Ridge Function
 # Course:   Multivariate Statistics
-# Authors:  blabla
+# Authors:  Merlijn van Breugel
 # Date:     01-09-2016
 
 ols_ridge_function <- function(X,y,lambda,standardize){
