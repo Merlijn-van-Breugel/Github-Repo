@@ -6,30 +6,31 @@
 
 ols_ridge_function <- function(X,y,lambda,center,standardize){
 
-    X <- as.matrix(scaling_function(X, center, standardize))
-    y <- as.matrix(scaling_function(y, center, FALSE))
-    size_X  <- dim(X)
+    X_scaled <- as.matrix(scaling_function(X, center, standardize))
+    y_scaled <- as.matrix(scaling_function(y, center, FALSE))
+    size_X  <- dim(X_scaled)
     
-    I_lambda<- matrix(0,ncol(X),ncol(X))
+    I_lambda<- matrix(0,ncol(X_scaled),ncol(X_scaled))
     I_lambda_sqrt<- I_lambda
     diag(I_lambda) <- lambda
     diag(I_lambda_sqrt) <- sqrt(lambda)
     
-    X_ridge <- rbind(X,I_lambda_sqrt)
-    y_zeros <- matrix(0,ncol(X),1)
-    y_ridge <- rbind(as.matrix(y),y_zeros)          
+    X_ridge <- rbind(X_scaled,I_lambda_sqrt)
+    y_zeros <- matrix(0,ncol(X_scaled),1)
+    y_ridge <- rbind(as.matrix(y_scaled),y_zeros)          
     
     b <- solve(t(X_ridge) %*% X_ridge) %*% t(X_ridge) %*% y_ridge
-    e <- y - X %*% b
+    y_est <- X_scaled %*% b
+    e <- y_scaled - y_est
     e_sq <- t(e) %*% e
     s_sq <- c(e_sq/(size_X[1][1]-size_X[2][1]))
-    inv_X_lambda <- solve(t(X) %*% X + I_lambda)
-    b_var <- s_sq * inv_X_lambda %*% t(X) %*% X %*% inv_X_lambda 
+    inv_X_lambda <- solve(t(X_scaled) %*% X_scaled + I_lambda)
+    b_var <- s_sq * inv_X_lambda %*% t(X_scaled) %*% X_scaled %*% inv_X_lambda 
     b_stdev <- sqrt(diag(b_var))
-    SST <- (t(y) %*% y)
+    SST <- (t(y_scaled) %*% y_scaled)
     R_sq <- 1 - e_sq/SST
     
-    hat_matrix <- X %*% inv_X_lambda %*% t(X)   
+    hat_matrix <- X_scaled %*% inv_X_lambda %*% t(X_scaled)   
     df <- sum(diag(hat_matrix))  
     
     BIC_ridge <- size_X[1][1]*log(e_sq) + 2*df*log(size_X[1][1])
@@ -38,8 +39,7 @@ ols_ridge_function <- function(X,y,lambda,center,standardize){
     ols_ridge <- lm(y_ridge ~ 0 + X_ridge)
     B <- cbind(b,b_stdev)
     colnames(B) = c('estimates','S.E.')
-    #colnames(b) = c('estimates')
-    #colnames(b_stdev) = c('S.E.')
+
     S <- cbind(R_sq,BIC_ridge,AIC_ridge)
     colnames(S) = c('R^2','BIC_ridge','AIC_ridge')
     result <- list(B,S)

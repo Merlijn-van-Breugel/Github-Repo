@@ -13,10 +13,10 @@ y_centered_est<- NULL
 #Start looping over all k folds
 for (i in 1:k) {
     
-    X_train         <- X_foldcat[X_foldcat[,dim(X_foldcat)[2][1]]!=i,][,1:ncol(X_foldcat)-1]
-    X_holdout       <- X_foldcat[X_foldcat[,dim(X_foldcat)[2][1]]==i,][,1:ncol(X_foldcat)-1]
-    y_train         <- cbind(y_foldcat[y_foldcat[,dim(y_foldcat)[2][1]]!=i,][,1:ncol(y_foldcat)-1])
-    y_holdout       <- cbind(y_foldcat[y_foldcat[,dim(y_foldcat)[2][1]]==i,][,1:ncol(y_foldcat)-1])
+    X_train         <- X[X[,dim(X)[2][1]]!=i,][,1:ncol(X)-1]
+    X_holdout       <- X[X[,dim(X)[2][1]]==i,][,1:ncol(X)-1]
+    y_train         <- cbind(y[y[,dim(y)[2][1]]!=i,][,1:ncol(y)-1])
+    y_holdout       <- cbind(y[y[,dim(y)[2][1]]==i,][,1:ncol(y)-1])
     
     X_train_scaled  <- scaling_function(X_train, TRUE, TRUE)
     X_holdout_scaled<- scaling_function(X_holdout, TRUE, TRUE)
@@ -34,13 +34,13 @@ for (i in 1:k) {
     
 }
 
-y_centered      <- scaling_function(y, TRUE, FALSE)
+y_centered      <- scaling_function(y[,1], TRUE, FALSE)
 error           <- y_centered - y_centered_est
 e_sq            <- t(error) %*% error
-SST             <- t(y - mean(y)) %*% (y - mean(y))   #no need to take the diff from mean, as this is set to zero
+SST             <- t(y_centered - mean(y_centered)) %*% (y_centered - mean(y_centered))   #no need to take the diff from mean, as this is set to zero
 R_sq            <- 1 - e_sq/SST
 
-return(y_centered_est)
+return(R_sq)
 }
 
 
