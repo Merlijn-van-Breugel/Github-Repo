@@ -6,19 +6,18 @@
 
 ols_ridge_function <- function(X,y,lambda,center,standardize){
 
-    X <- scaling_function(X, center, standardize)
+    X <- as.matrix(scaling_function(X, center, standardize))
     
     size_X  <- dim(X)
-    size_y  <- dim(y)
     
-    I_lambda<- matrix(0,size_X[2][1],size_X[2][1])
+    I_lambda<- matrix(0,ncol(X),ncol(X))
     I_lambda_sqrt<- I_lambda
     diag(I_lambda) <- lambda
     diag(I_lambda_sqrt) <- sqrt(lambda)
     
     X_ridge <- rbind(X,I_lambda_sqrt)
-    y_zeros <- matrix(0,size_X[2][1],1)
-    y_ridge <- rbind(y,y_zeros)          
+    y_zeros <- matrix(0,ncol(X),1)
+    y_ridge <- rbind(as.matrix(y),y_zeros)          
     
     b <- solve(t(X_ridge) %*% X_ridge) %*% t(X_ridge) %*% y_ridge
     e <- y - X %*% b
