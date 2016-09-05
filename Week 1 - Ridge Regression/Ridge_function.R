@@ -40,8 +40,8 @@ ols_ridge_function <- function(X,y,lambda,center,standardize){
     B <- cbind(b,b_stdev)
     colnames(B) = c('estimates','S.E.')
 
-    S <- cbind(R_sq,BIC_ridge,AIC_ridge)
-    colnames(S) = c('R^2','BIC_ridge','AIC_ridge')
+    S <- cbind(R_sq,BIC_ridge,AIC_ridge,df)
+    colnames(S) = c('R^2','BIC_ridge','AIC_ridge','df')
     result <- list(B,S)
     return(result)
     
