@@ -8,9 +8,15 @@ scaling_function <- function(X,center,standardize){
     
     center_factor_X <- 
         if (center==TRUE) {
-            colMeans(X)} else {
-                FALSE
+            if (class(X) == "numeric") {
+                mean(X)
+            } else {
+                colMeans(X)
             }
+        }
+             else { FALSE }
+        
+    
     scaling_factor_X <- 
         if (standardize==TRUE) {
             sqrt(apply(X,2,var))} else {
