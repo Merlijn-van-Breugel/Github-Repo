@@ -7,7 +7,7 @@
 ols_ridge_function <- function(X,y,lambda,center,standardize){
 
     X <- as.matrix(scaling_function(X, center, standardize))
-    
+    y <- as.matrix(scaling_function(y, center, FALSE))
     size_X  <- dim(X)
     
     I_lambda<- matrix(0,ncol(X),ncol(X))
