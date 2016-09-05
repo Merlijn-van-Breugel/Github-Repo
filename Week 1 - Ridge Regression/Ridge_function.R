@@ -4,16 +4,19 @@
 # Authors:  Merlijn van Breugel
 # Date:     01-09-2016
 
-ols_ridge_function <- function(X,y,lambda,standardize){
+ols_ridge_function <- function(X,y,lambda,center,standardize){
 
-    X <- scaling_function(X, TRUE, standardize)
-    y <- scaling_function(y, TRUE, standardize)
+    X <- scaling_function(X, center, standardize)
     
     size_X  <- dim(X)
     size_y  <- dim(y)
+    
     I_lambda<- matrix(0,size_X[2][1],size_X[2][1])
-    diag(I_lambda) <- sqrt(lambda)
-    X_ridge <- rbind(X,I_lambda)
+    I_lambda_sqrt<- I_lambda
+    diag(I_lambda) <- lambda
+    diag(I_lambda_sqrt) <- sqrt(lambda)
+    
+    X_ridge <- rbind(X,I_lambda_sqrt)
     y_zeros <- matrix(0,size_X[2][1],1)
     y_ridge <- rbind(y,y_zeros)          
     
