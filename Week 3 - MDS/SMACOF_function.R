@@ -4,7 +4,7 @@ function_SMACOF <- function(D,X,eps,W){
     
     #Check whether D satisfies symmetry, nonnegativity and zero diagonal
     if (isSymmetric.matrix(D) == 1 && min(D)>=0 && sum(diag(D)) == 0) {
-        #okay
+        #okay, continue
     }
     else {
         stop("Matrix D does not satisfy dissimilarity properties")
@@ -37,7 +37,7 @@ function_SMACOF <- function(D,X,eps,W){
         Z <- X                                          #Update Z 
         Z_dist <- function_euclidean_distance(Z)        #Get new Euclidian distance of Z
         Stress <- rbind(Stress,sum(W * ((D - Z_dist)*(D - Z_dist)))/2) #Add new raw Stress to Stress vector
-        plot(X,asp=1)
+        plot(X,asp=1,xlab='',ylab='',col='red',pch=16)
         textxy(X[,1],X[,2],labels,offset = 0.65)
         Sys.sleep(0.07)
         #print(Stress[k+1]/(sum(D*D)/2))                #Print new normalized Stress value, also given in output
