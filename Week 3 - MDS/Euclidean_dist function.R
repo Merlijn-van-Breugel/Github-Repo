@@ -1,3 +1,4 @@
+#Function which computes Euclidian distances of matrix X, returns distance matrix D 
 function_euclidean_distance <- function(X){
   p<-ncol(X)
   n<-nrow(X)

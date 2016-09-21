@@ -1,7 +1,5 @@
-
+#Function which performes MDS 
 function_SMACOF <- function(D,X,eps,W){
-
-    
     #Check whether D satisfies symmetry, nonnegativity and zero diagonal
     if (isSymmetric.matrix(D) == 1 && min(D)>=0 && sum(diag(D)) == 0) {
         #okay, continue

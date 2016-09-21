@@ -53,7 +53,7 @@ for (lambda in lambda_range){
     L <- c(L,lambda)
 }
 #plot 
-matplot(log10(b_estimates[,1]), b_estimates[,c(-1)],type = c("l"),xlab="log10(lambda)",ylab="b estimates")   #for matrix b_estimates
+matplot(log10(b_estimates[,1]), b_estimates[,2:10], type = c("l"), xlab="log10(lambda)",ylab="b estimates")   #for matrix b_estimates
 matplot(log10(R_sq[,1]), R_sq[,c(-1)],type = c("l"),xlab="log10(lambda)",ylab="R-squared")                 #for R-squared
 #give b coefficients for optimal lambda
 b_opt <- ols_ridge_function(X,y,lambda_opt,TRUE,TRUE)[1]

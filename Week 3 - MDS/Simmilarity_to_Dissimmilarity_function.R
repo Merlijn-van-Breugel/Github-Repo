@@ -1,3 +1,4 @@
+#Function which transforms a simmilarity matrix S to a dissimilarity matrix D
 function_similarity_to_dissimilarity <- function(S){
     D <- matrix(0,dim(S)[1],dim(S)[2])
     for (i in 1:dim(S)[1]){

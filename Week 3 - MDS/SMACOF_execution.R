@@ -79,4 +79,3 @@ ggplot(data_bubble, aes(x_coordinate,y_coordinate))+
                nudge_x = 0.1, nudge_y = 0.1,check_overlap = TRUE)+
     theme_bw()
     
-plot(conf_standard)
