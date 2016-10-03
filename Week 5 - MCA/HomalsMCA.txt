@@ -1,0 +1,57 @@
+homals_MCA <- function (data,ndim)
+{
+  #test
+  #data <- matrix(c(1,2,3,4,5,6), ncol = 2)
+  data <- titanic
+  ndim <- 2
+  
+  #initialize
+  n <- nrow(data) #number of observations
+  k <- ncol(data) #number of variables 
+  p <- ndim #dimensions of MCA
+  
+
+  #Generate a Random X where X is nxp
+  X <- matrix(runif((n*p),0,1), nrow = n, ncol=p)
+  
+  #set X in deviation of column mean
+  X_colmeans <- t(matrix(rep(colMeans(X),n),ncol=n))
+  X <- X - X_colmeans
+  
+  #Compute SVD
+  s <- svd(X)
+  
+  #in terms of slide 15
+  P <- s$u
+  Phi <- diag(s$d)
+  Q <- s$v
+  
+  X_svd <- P %*%  Phi %*% t(Q)
+  
+  #Choose X = sqrt(n)*P
+  X <- sqrt(n) * P
+  
+  #Compute Indicator Matrix
+  G_ind <- NULL
+  Cat <- NULL
+  G <-as.dummy(data)
+  G_ind<- as.matrix(G[[1]])
+  Cat <- as.matrix(G[[2]])
+  
+  #Compute D
+  D <- t(G_ind)%*%G_ind
+
+  #Compute update of Yk given X
+  Y <- NULL
+  start <- 1
+  for ( l in 1:k)
+  {
+   end <- sum(Cat[1:l])
+   Dk <- D[start:end,start:end]
+   Gk <- G_ind[,start:end]  
+   Yk <- solve(Dk) %*% t(Gk) %*% X #calculate Yk
+   Y <-rbind(Y,Yk) #insert Yk into Y
+  # browser()
+   start <- start + Cat[l]
+  }
+}
